@@ -2,39 +2,46 @@ const { Categoria, Producto } = require('../models');
 const Rol = require('../models/rol');
 const User = require('../models/usuario');
 
-const esRolValido = async(rol='') => {
+const esRolValido = async (rol = '') => {
     const existeRol = await Rol.findOne({ rol });
-    if(!existeRol){
+    if (!existeRol) {
         throw new Error(`El rol ${rol} no se encuentra en la DB`)
     }
 };
 
-const emailExiste = async(correo='') => {
+const emailExiste = async (correo = '') => {
     const emailDb = await User.findOne({ correo });
-    if(emailDb) {
+    if (emailDb) {
         throw new Error(`El email ${correo} ya se encuentra en la DB`)
     }
 };
 
-const existeUsuarioPorId = async(id) => {
-    const existeUsuario = await User.findById( id );
-    if(!existeUsuario) {
+const existeUsuarioPorId = async (id) => {
+    const existeUsuario = await User.findById(id);
+    if (!existeUsuario) {
         throw new Error(`El usuario ${id} no se encuentra en la DB`)
     }
 };
 
-const existeCategoriaPorId = async(id) => {
-    const existeCategoria = await Categoria.findById( id );
-    if(!existeCategoria) {
+const existeCategoriaPorId = async (id) => {
+    const existeCategoria = await Categoria.findById(id);
+    if (!existeCategoria) {
         throw new Error(`La categoria ${id} no se encuentra en la DB`)
     }
 };
 
-const existeProductoPorId = async(id) => {
-    const existeProducto = await Producto.findById( id );
-    if(!existeProducto) {
+const existeProductoPorId = async (id) => {
+    const existeProducto = await Producto.findById(id);
+    if (!existeProducto) {
         throw new Error(`El producto ${id} no se encuentra en la DB`)
     }
+};
+
+const coleccionesPermitidas = (coleccion, coleccionesPerm) => {
+    if (!coleccionesPerm.includes(coleccion)) {
+        throw new Error(`La coleccion ${coleccion} no es permitida - ${coleccionesPerm}`)
+    }
+    return true;
 };
 
 
@@ -43,5 +50,6 @@ module.exports = {
     emailExiste,
     existeUsuarioPorId,
     existeCategoriaPorId,
-    existeProductoPorId
+    existeProductoPorId,
+    coleccionesPermitidas
 }
